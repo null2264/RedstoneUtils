@@ -25,7 +25,7 @@
 ## The Block Detector
 <img src="https://i.imgur.com/QE6Wa5C.png" width="400"/>
 
-#####It will emit a redstone at its back side (opposite of the front face) if it detects a block directly in front of it.
+##### It will emit a redstone at its back side (opposite of the front face) if it detects a block directly in front of it.
 
 #### Recipe : 
 
