@@ -1,0 +1,6 @@
+-----------------------------------
+    beta0.1.0+build.1
+-----------------------------------
+- Added the Stone Breaker, the Redstone Clock and the Block Detector
+- Known bugs :
+   - The Block Detector can be in a On/Off loop if it receives its own power
