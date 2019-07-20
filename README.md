@@ -14,13 +14,13 @@
 <img src="https://i.imgur.com/ESzR3oQ.png" width="400"/>
 
 ## The Stone Breaker
-<img src="https://i.imgur.com/HzitAp2.png" width="400"/>
+<img src="https://i.imgur.com/Yif1jaA.png" width="400"/>
 
 ##### Needs a redstone signal to operate. It will destroy stone and cobblestone 1 block in front of it.
 
 #### Recipe : 
 
-<img src="https://i.imgur.com/spxb0Ee.png" width="400"/>
+<img src="https://i.imgur.com/HzitAp2.png" width="400"/>
 
 ## The Block Detector
 <img src="https://i.imgur.com/QE6Wa5C.png" width="400"/>
