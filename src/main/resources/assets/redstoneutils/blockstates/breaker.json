@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "redstoneutils:block/breaker" },
+    "facing=south": { "model": "redstoneutils:block/breaker", "y": 180 },
+    "facing=west":  { "model": "redstoneutils:block/breaker", "y": 270 },
+    "facing=east":  { "model": "redstoneutils:block/breaker", "y": 90 }
+  }
+}

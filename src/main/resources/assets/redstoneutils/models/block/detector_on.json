@@ -1,0 +1,6 @@
+{
+  "parent": "redstoneutils:block/detector",
+  "textures": {
+    "south": "redstoneutils:block/detector_back_on"
+  }
+}

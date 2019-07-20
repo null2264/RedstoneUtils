@@ -1,0 +1,9 @@
+{
+  "parent": "block/orientable",
+  "textures": {
+    "top": "block/furnace_top",
+    "front": "redstoneutils:block/detector_front",
+    "side": "block/furnace_side",
+    "south": "redstoneutils:block/detector_back"
+  }
+}

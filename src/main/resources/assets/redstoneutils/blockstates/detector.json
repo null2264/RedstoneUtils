@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=down,powered=false": { "model": "redstoneutils:block/detector_vertical", "x": 180 },
+    "facing=up,powered=false": { "model": "redstoneutils:block/detector_vertical"},
+    "facing=north,powered=false": { "model": "redstoneutils:block/detector" },
+    "facing=south,powered=false": { "model": "redstoneutils:block/detector", "y": 180 },
+    "facing=west,powered=false":  { "model": "redstoneutils:block/detector", "y": 270 },
+    "facing=east,powered=false":  { "model": "redstoneutils:block/detector", "y": 90 },
+    "facing=down,powered=true": { "model": "redstoneutils:block/detector_on_vertical", "x": 180 },
+    "facing=up,powered=true": { "model": "redstoneutils:block/detector_on_vertical"},
+    "facing=north,powered=true": { "model": "redstoneutils:block/detector_on" },
+    "facing=south,powered=true": { "model": "redstoneutils:block/detector_on", "y": 180 },
+    "facing=west,powered=true":  { "model": "redstoneutils:block/detector_on", "y": 270 },
+    "facing=east,powered=true":  { "model": "redstoneutils:block/detector_on", "y": 90 }
+  }
+}
