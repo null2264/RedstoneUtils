@@ -1,10 +1,11 @@
-package net.ikumii.redstoneutil;
+package net.redstone.utils.redstoneutil;
 
 import net.minecraft.block.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.StateFactory;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
@@ -25,7 +26,7 @@ public class DetectorBlock extends Block
     public DetectorBlock()
     {
         super(Settings.of(Material.STONE).strength(3.5f, 3.5f));
-        this.setDefaultState(this.stateFactory.getDefaultState().with(FACING, Direction.NORTH));
+        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH));
     }
     
     @Override
@@ -41,9 +42,9 @@ public class DetectorBlock extends Block
     }
     
     @Override
-    protected void appendProperties(StateFactory.Builder<Block, BlockState> stateFactory$Builder_1)
+    protected void appendProperties(StateManager.Builder<Block, BlockState> stateManager$Builder_1)
     {
-        stateFactory$Builder_1.add(FACING, POWERED, TRIGGER, LOCKED);
+        stateManager$Builder_1.add(FACING, POWERED, TRIGGER, LOCKED);
     }
     
     @Override
@@ -58,8 +59,7 @@ public class DetectorBlock extends Block
         return blockState_1.rotate(blockMirror_1.getRotation(blockState_1.get(FACING)));
     }
     
-    @Override
-    public void onScheduledTick(BlockState blockState_1, World world_1, BlockPos blockPos_1, Random random_1)
+    public void scheduledTick(BlockState blockState_1, ServerWorld world_1, BlockPos blockPos_1, Random random_1)
     {
         world_1.setBlockState(blockPos_1, blockState_1.with(POWERED, blockState_1.get(TRIGGER) && !blockState_1.get(LOCKED)));
         world_1.getBlockTickScheduler().schedule(blockPos_1, this, 2);

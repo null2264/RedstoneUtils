@@ -1,4 +1,4 @@
-package net.ikumii.redstoneutil;
+package net.redstone.utils.redstoneutil;
 
 import net.minecraft.block.*;
 import net.minecraft.block.entity.*;
@@ -8,7 +8,8 @@ import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.state.StateFactory;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
@@ -29,7 +30,7 @@ public class BreakerBlock extends Block
     public BreakerBlock()
     {
         super(Settings.of(Material.STONE).strength(3.5f, 3.5f));
-        this.setDefaultState(this.stateFactory.getDefaultState().with(FACING, Direction.NORTH));
+        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH));
     }
     
     @Override
@@ -39,9 +40,9 @@ public class BreakerBlock extends Block
     }
     
     @Override
-    protected void appendProperties(StateFactory.Builder<Block, BlockState> stateFactory$Builder_1)
+    protected void appendProperties(StateManager.Builder<Block, BlockState> stateManager$Builder_1)
     {
-        stateFactory$Builder_1.add(FACING, TRIGGERED);
+        stateManager$Builder_1.add(FACING, TRIGGERED);
     }
     
     @Override
@@ -56,7 +57,7 @@ public class BreakerBlock extends Block
         return blockState_1.rotate(blockMirror_1.getRotation(blockState_1.get(FACING)));
     }
     
-    public void onScheduledTick(BlockState blockState_1, World world_1, BlockPos blockPos_1, Random random_1)
+    public void scheduledTick(BlockState blockState_1, ServerWorld world_1, BlockPos blockPos_1, Random random_1)
     {
         if (!world_1.isClient)
         {
@@ -79,56 +80,50 @@ public class BreakerBlock extends Block
                         if ((entity instanceof ChestBlockEntity && invBlock instanceof ChestBlock) || (entity instanceof HopperBlockEntity && invBlock instanceof HopperBlock && dir == Direction.DOWN))
                         {
                             has_chest_connected = true;
-                            Inventory inv = invBlock instanceof ChestBlock ? ChestBlock.getInventory(invBlockState, world_1, invBlockPos, true) : HopperBlockEntity.getInventoryAt(world_1, invBlockPos);
+                            Inventory inv = invBlock instanceof ChestBlock ? ChestBlock.getInventory((ChestBlock) invBlock, invBlockState, world_1, invBlockPos, true) : HopperBlockEntity.getInventoryAt(world_1, invBlockPos);
                             invFull = isInventoryFull(inv, dir);
                             if(!invFull)
                             {
                                 getAvailableSlots(inv, dir).anyMatch((int_i) ->{
-                                    ItemStack is = inv.getInvStack(int_i);
-                                    if(is.getItem() == Items.AIR)
-                                    {
+                                    ItemStack is = inv.getStack(int_i);
+                                    if (is.getItem() == Items.AIR) {
                                         is = new ItemStack(block, 1);
-                                        inv.setInvStack(int_i, is);
+                                        inv.setStack(int_i, is);
                                         return true;
-                                    }
-                                    else if(is.getCount() < is.getMaxCount())
-                                    {
+                                    } else if (is.getCount() < is.getMaxCount()) {
                                         is.increment(1);
-                                        inv.setInvStack(int_i, is);
+                                        inv.setStack(int_i, is);
                                         return true;
                                     }
                                     return false;
                                 });
-                            }
-                            else
-                            {
+                            } else {
                                 continue;
                             }
                         }
                         break;
                     }
                 }
-                
-                if(!has_chest_connected || invFull)
-                {
+
+                if (!has_chest_connected || invFull) {
                     BlockPos top = blockPos_1.up(1);
-                    world_1.spawnEntity(new ItemEntity(world_1, top.getX() + 0.5d, top.getY() + 0.5d, top.getZ() + 0.5d, new ItemStack(block, 1)));
+                    world_1.spawnEntity(new ItemEntity(world_1, top.getX() + 0.5d, top.getY() + 0.5d, top.getZ() + 0.5d,
+                            new ItemStack(block, 1)));
                 }
             }
         }
     }
-    
-    private boolean isInventoryFull(Inventory inventory_1, Direction direction_1)
-    {
+
+    private boolean isInventoryFull(Inventory inventory_1, Direction direction_1) {
         return getAvailableSlots(inventory_1, direction_1).allMatch((int_1) -> {
-            ItemStack itemStack_1 = inventory_1.getInvStack(int_1);
+            ItemStack itemStack_1 = inventory_1.getStack(int_1);
             return itemStack_1.getCount() >= itemStack_1.getMaxCount();
         });
     }
     
     private static IntStream getAvailableSlots(Inventory inventory_1, Direction direction_1)
     {
-        return inventory_1 instanceof SidedInventory ? IntStream.of(((SidedInventory)inventory_1).getInvAvailableSlots(direction_1)) : IntStream.range(0, inventory_1.getInvSize());
+        return inventory_1 instanceof SidedInventory ? IntStream.of(((SidedInventory)inventory_1).getAvailableSlots(direction_1)) : IntStream.range(0, inventory_1.size());
     }
     
     private boolean canBreakBlock(World world, BlockPos pos)
@@ -143,7 +138,7 @@ public class BreakerBlock extends Block
         boolean boolean_3 = blockState_1.get(TRIGGERED);
         if (boolean_2 && !boolean_3)
         {
-            world_1.getBlockTickScheduler().schedule(blockPos_1, this, this.getTickRate(world_1));
+            world_1.getBlockTickScheduler().schedule(blockPos_1, this, 20);
             world_1.setBlockState(blockPos_1, blockState_1.with(TRIGGERED, true), 4);
         }
         else if (!boolean_2 && boolean_3)

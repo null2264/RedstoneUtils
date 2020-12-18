@@ -1,4 +1,4 @@
-package net.ikumii.redstoneutil;
+package net.redstone.utils.redstoneutil;
 
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.block.Block;

@@ -1,21 +1,15 @@
-package net.ikumii.redstoneutil;
+package net.redstone.utils.redstoneutil;
 
 import net.minecraft.block.*;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.StateFactory;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.DirectionProperty;
-import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
-import net.minecraft.util.BlockMirror;
-import net.minecraft.util.BlockRotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
-import net.minecraft.world.TickScheduler;
-import net.minecraft.world.ViewableWorld;
 import net.minecraft.world.World;
 
 import java.util.Random;
@@ -37,13 +31,12 @@ public class ClockBlock extends Block
     }
     
     @Override
-    protected void appendProperties(StateFactory.Builder<Block, BlockState> stateFactory$Builder_1)
+    protected void appendProperties(StateManager.Builder<Block, BlockState> stateManager$Builder_1)
     {
-        stateFactory$Builder_1.add(POWERED, LOCKED);
+        stateManager$Builder_1.add(POWERED, LOCKED);
     }
     
-    @Override
-    public void onScheduledTick(BlockState blockState_1, World world_1, BlockPos blockPos_1, Random random_1)
+    public void scheduledTick(BlockState blockState_1, ServerWorld world_1, BlockPos blockPos_1, Random random_1)
     {
         if(!blockState_1.get(POWERED) && !blockState_1.get(LOCKED))
         {
@@ -52,7 +45,7 @@ public class ClockBlock extends Block
         }
         else
         {
-            world_1.getBlockTickScheduler().schedule(blockPos_1, this, this.getTickRate(world_1));
+            world_1.getBlockTickScheduler().schedule(blockPos_1, this, 20);
             world_1.setBlockState(blockPos_1, blockState_1.with(POWERED, false));
         }
     }
@@ -63,16 +56,10 @@ public class ClockBlock extends Block
     }
     
     @Override
-    public int getTickRate(ViewableWorld viewableWorld_1)
-    {
-        return 20;
-    }
-    
-    @Override
     public void onPlaced(World world_1, BlockPos blockPos_1, BlockState blockState_1, LivingEntity livingEntity_1, ItemStack itemStack_1)
     {
         super.onPlaced(world_1, blockPos_1, blockState_1, livingEntity_1, itemStack_1);
-        world_1.getBlockTickScheduler().schedule(blockPos_1, this, this.getTickRate(world_1));
+        world_1.getBlockTickScheduler().schedule(blockPos_1, this, 20);
     }
     
     public int getStrongRedstonePower(BlockState blockState_1, BlockView blockView_1, BlockPos blockPos_1, Direction direction_1)

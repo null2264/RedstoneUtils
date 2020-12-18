@@ -6,6 +6,7 @@
   "name": "Redstone Utils",
   "description": "Some redstone utilities",
   "authors": [
+    "null2264",
     "Ikumii"
   ],
   "contact": {
@@ -19,7 +20,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.ikumii.redstoneutil.RedstoneUtil"
+      "net.redstone.utils.redstoneutil.RedstoneUtil"
     ]
   },
 
