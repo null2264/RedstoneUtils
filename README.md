@@ -1,3 +1,5 @@
+**Merged with [Xtra Stuff](https://github.com/null2264/Xtra-Stuff)**
+
 # RedstoneUtils
 
 ##### This Minecraft mod adds some utility blocks for redstone contraptions.
